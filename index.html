@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="render.js"></script>
+        <script src="controller.js"></script>
+        <script src="scene.js"></script>
+        <script src="entities/board.js"></script>
+        <script src="entities/piece.js"></script>
+        <script src="entities/piece1.js"></script>
+        <script src="entities/piece2.js"></script>
+        <script src="entities/piece3.js"></script>
+        <script src="entities/piece4.js"></script>
+        <script src="entities/piece5.js"></script>
+        <script src="entities/piece6.js"></script>
+        <script src="entities/piece7.js"></script>
+        <script type="text/javascript">
+            
+            var canvas = null;
+            var context = null;
+            var prevTime = 0;
+            var scene = null;
+            
+            window.onload = function() {
+                var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+                canvas = document.getElementById("canvas");
+                canvas.width = 600;
+                canvas.height = 800;
+                context = canvas.getContext("2d");
+                scene = new Scene(canvas, context);
+                window.requestAnimationFrame = requestAnimationFrame;
+                window.requestAnimationFrame(update);
+            };
+            
+            function update(currTime) {
+                var diff = currTime - prevTime;
+                var deltatime = diff / 1000;
+                prevTime = currTime;
+                scene.update(deltatime);
+                window.requestAnimationFrame(update);
+            }
+            
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+    </body>
+</html>
