@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>JSTetris</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="render.js"></script>
@@ -14,6 +14,8 @@ and open the template in the editor.
         <script src="scene.js"></script>
         <script src="entities/board.js"></script>
         <script src="entities/piece.js"></script>
+        <script src="utils/assets.js"></script>
+        <script src="utils/atlas.js"></script>
         <script type="text/javascript">
             
             var canvas = null;
@@ -22,6 +24,16 @@ and open the template in the editor.
             var scene = null;
             
             window.onload = function() {
+                var assets = Assets.getInstance();
+                assets.loadAll(onLoadAssets);
+            };
+            
+            function onLoadAssets() {
+                var atlas = Atlas.getInstance();
+                atlas.loadAll(onLoadAtlas);
+            }
+            
+            function onLoadAtlas() {
                 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
                 canvas = document.getElementById("canvas");
                 canvas.width = 800;
@@ -30,7 +42,7 @@ and open the template in the editor.
                 scene = new Scene(canvas, context);
                 window.requestAnimationFrame = requestAnimationFrame;
                 window.requestAnimationFrame(update);
-            };
+            }
             
             function update(currTime) {
                 var diff = currTime - prevTime;
@@ -39,7 +51,6 @@ and open the template in the editor.
                 scene.update(deltatime);
                 window.requestAnimationFrame(update);
             }
-            
         </script>
     </head>
     <body>

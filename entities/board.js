@@ -28,6 +28,8 @@ class Board {
         this.rotated = false;
         this.rotationDone = false;
         this.isFilled = false;
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance(); 
     }
     
     update(deltatime) {
@@ -95,10 +97,12 @@ class Board {
             var y = Math.floor(a / this.width);
             if (this.matrix[a] === 1) {
                 context.fillStyle = "#8ED6FF";
+                context.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
             } else {
-                context.fillStyle = "#FF00FF";
+                //context.fillStyle = "#FF00FF";
+                context.drawImage(this.assets.spritesAtlas, this.atlas.sprites["s8.jpg"].x, this.atlas.sprites["s8.jpg"].y, this.atlas.sprites["s8.jpg"].width, this.atlas.sprites["s8.jpg"].height, x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
             }
-            context.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
+            
         }
         
         if (this.piece !== null) {
