@@ -41,6 +41,7 @@ class Atlas {
                for (var i = 0; i < elements.length; i++) {
                    var name = elements[i].getAttribute("name");
                    name = name.replace(".png", "");
+                   name = name.replace(".jpg", "");
                    var x = elements[i].getAttribute("x");
                    var y = elements[i].getAttribute("y");
                    var width = elements[i].getAttribute("width");

@@ -9,13 +9,13 @@ class Board {
         }
         this.tileSize = 40;
         this.pieces = [
-            new Piece(3, 0, 3, this.tileSize, [1, 0, 0, 1, 1, 1, 0, 0, 0]),
-            new Piece(4, 0, 2, this.tileSize, [1, 1, 1, 1]),
-            new Piece(3, 0, 3, this.tileSize, [0, 0, 1, 1, 1, 1, 0, 0, 0]),
-            new Piece(3, 0, 3, this.tileSize, [0, 1, 1, 1, 1, 0, 0, 0, 0]),
-            new Piece(3, 0, 3, this.tileSize, [1, 1, 0, 0, 1, 1, 0, 0, 0]),
-            new Piece(3, 0, 3, this.tileSize, [0, 1, 0, 1, 1, 1, 0, 0, 0]),
-            new Piece(3, 0, 4, this.tileSize, [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            new Piece(3, 0, 3, this.tileSize, 1, [1, 0, 0, 1, 1, 1, 0, 0, 0]),
+            new Piece(4, 0, 2, this.tileSize, 2, [1, 1, 1, 1]),
+            new Piece(3, 0, 3, this.tileSize, 3, [0, 0, 1, 1, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileSize, 4, [0, 1, 1, 1, 1, 0, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileSize, 5, [1, 1, 0, 0, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileSize, 6, [0, 1, 0, 1, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 4, this.tileSize, 7, [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         ];    
         this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
         this.downSpeedTimeLimit = 0.4;
@@ -47,8 +47,8 @@ class Board {
                 this.piece.y = prevY;         
                 for (var y = this.piece.y; y < this.piece.y + this.piece.size; y++) {
                     for (var x = this.piece.x; x < this.piece.x + this.piece.size; x++) {
-                        if (this.piece.getValue(x - this.piece.x, y - this.piece.y) === 1) {
-                            this.matrix[y * this.width + x] = 1;
+                        if (this.piece.getValue(x - this.piece.x, y - this.piece.y) > 0) {
+                            this.matrix[y * this.width + x] = this.piece.type;
                         }
                     }
                 }
@@ -95,14 +95,8 @@ class Board {
         for (var a = 0; a < this.width * this.height; a++) {
             var x = a % this.width;
             var y = Math.floor(a / this.width);
-            if (this.matrix[a] === 1) {
-                context.fillStyle = "#8ED6FF";
-                context.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
-            } else {
-                //context.fillStyle = "#FF00FF";
-                context.drawImage(this.assets.spritesAtlas, this.atlas.sprites["s8.jpg"].x, this.atlas.sprites["s8.jpg"].y, this.atlas.sprites["s8.jpg"].width, this.atlas.sprites["s8.jpg"].height, x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
-            }
-            
+            var name = "s" + this.matrix[a];
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);  
         }
         
         if (this.piece !== null) {
@@ -146,10 +140,10 @@ class Board {
     collide(piece) {
         for (var y = 0; y < piece.size; y++) {
             for (var x = 0; x < piece.size; x++) {
-                if (piece.getValue(x, y) === 1) {
+                if (piece.getValue(x, y) > 0) {
                     var currX = piece.x + x;
                     var currY = piece.y + y;
-                    if (currX < 0 || currX >= this.width || currY >= this.height || this.matrix[currY * this.width + currX] === 1) {
+                    if (currX < 0 || currX >= this.width || currY >= this.height || this.matrix[currY * this.width + currX] > 0) {
                         return true;
                     }
                 }
@@ -174,9 +168,9 @@ class Board {
                 
                 for (var innerY = y - 1; innerY >= 0; innerY--) {
                     for (var x = 0; x < this.width; x++) {
-                        if (this.matrix[innerY * this.width + x] === 1) {
+                        if (this.matrix[innerY * this.width + x] > 0) {
+                            this.matrix[(innerY + 1) * this.width + x] = this.matrix[innerY * this.width + x];
                             this.matrix[innerY * this.width + x] = 0;
-                            this.matrix[(innerY + 1) * this.width + x] = 1;
                         }
                     }
                 }

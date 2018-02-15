@@ -1,13 +1,15 @@
 class Piece {
     
-    constructor(x, y, size, tileSize, matrix) {
+    constructor(x, y, size, tileSize, type, matrix) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize; // tile pixel width height
         this.size = size; // tetromino width height size
+        this.type = type;
         this.matrix = matrix;
         this.prevMatrix = matrix;
-        
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance();
     }
     
     render(context) {
@@ -16,8 +18,8 @@ class Piece {
                 if (this.matrix[y * this.size + x] === 1) {
                     var currX = this.x + x;
                     var currY = this.y + y;
-                    context.fillStyle = "#0000FF";
-                    context.fillRect(currX * this.tileSize, currY * this.tileSize, this.tileSize, this.tileSize);
+                    var name = "s" + this.type;
+                    context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, currX * this.tileSize, currY * this.tileSize, this.tileSize, this.tileSize);
                 }
             }
         }
@@ -63,6 +65,6 @@ class Piece {
     }
     
     clone() {
-        return new Piece(this.x, this.y, this.size, this.tileSize, this.matrix);
+        return new Piece(this.x, this.y, this.size, this.tileSize, this.type, this.matrix);
     }
 }
