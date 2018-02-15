@@ -2,7 +2,6 @@ class Controller {
     
     constructor() {
         this.board = new Board();
-        this.board.add(this.board.getRandomPiece());
     }
     
     update(deltatime) {
@@ -20,6 +19,10 @@ class Controller {
     
     rotate(bool) {
         this.board.rotate(bool);
+    }
+    
+    down(bool) {
+        this.board.down(bool);
     }
 }
 

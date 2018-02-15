@@ -12,8 +12,7 @@ class Scene {
     }
     
     onKeyDown(event) {
-        var evt = event || window.event;
-        
+        var evt = event || window.event;      
         if (evt.keyCode === 37) {
             this.controller.left(true);
         }
@@ -22,6 +21,9 @@ class Scene {
         }
         if (evt.keyCode === 38) {
             this.controller.rotate(true);
+        }
+        if (evt.keyCode === 40) {
+            this.controller.down(true);
         }
     }
     
@@ -35,6 +37,9 @@ class Scene {
         }
         if (evt.keyCode === 38) {
             this.controller.rotate(false);
+        }
+        if (evt.keyCode === 40) {
+            this.controller.down(false);
         }
     }
 }

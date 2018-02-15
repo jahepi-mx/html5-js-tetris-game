@@ -1,73 +1,57 @@
 class Board {
     
-    constructor() {
-        
-        this.matrix = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ];
-        
+    constructor() {   
         this.width = 10;
         this.height = 20;
-        this.piece = null;
+        this.matrix = [];
+        for (var a = 0; a < this.width * this.height; a++) {
+            this.matrix[a] = 0;
+        }
+        this.tileSize = 40;
+        this.pieces = [
+            new Piece(3, 0, 3, this.tileSize, [1, 0, 0, 1, 1, 1, 0, 0, 0]),
+            new Piece(4, 0, 2, this.tileSize, [1, 1, 1, 1]),
+            new Piece(3, 0, 3, this.tileSize, [0, 0, 1, 1, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileSize, [0, 1, 1, 1, 1, 0, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileSize, [1, 1, 0, 0, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileSize, [0, 1, 0, 1, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 4, this.tileSize, [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        ];    
+        this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
         this.downSpeedTimeLimit = 0.4;
+        this.downSpeedTimeLimitTmp = 0;
         this.downSpeedTime = 0;
         this.moveTime = 0;
         this.moveTimeLimit = 0.1;
-        this.moveRotationTime = 0;
-        this.moveRotationTimeLimit = 0.3;
-        this.tileSize = 40;
         this.moveLeft = false;
         this.moveRight = false;
         this.rotated = false;
-        this.piecesClasses = [Piece1, Piece2, Piece3, Piece4, Piece5, Piece6, Piece7];
+        this.rotationDone = false;
         this.isFilled = false;
-    }
-    
-    add(piece) {
-        this.piece = piece;
     }
     
     update(deltatime) {
         
-        if (this.piece === null || this.isFilled) {
+        if (this.isFilled) {
             return;
         }
         
         this.downSpeedTime += deltatime;
         if (this.downSpeedTime >= this.downSpeedTimeLimit) {
             this.downSpeedTime = 0;
-            var prevY = this.piece.getY();
-            this.piece.down();
+            var prevY = this.piece.y;
+            this.piece.y++;
             if (this.collide(this.piece)) {
                 this.piece.y = prevY;         
-                for (var y = this.piece.getY(); y < this.piece.getY() + this.piece.size; y++) {
-                    for (var x = this.piece.getX(); x < this.piece.getX() + this.piece.size; x++) {
-                        if (this.piece.getRotationMatrixValue(x - this.piece.getX(), y - this.piece.getY()) === 1) {
+                for (var y = this.piece.y; y < this.piece.y + this.piece.size; y++) {
+                    for (var x = this.piece.x; x < this.piece.x + this.piece.size; x++) {
+                        if (this.piece.getValue(x - this.piece.x, y - this.piece.y) === 1) {
                             this.matrix[y * this.width + x] = 1;
                         }
                     }
                 }
                 this.clearLines();
-                this.piece = this.getRandomPiece();
+                this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
                 // If it is collinding with something the game must end.
                 if (this.collide(this.piece)) {
                     this.isFilled = true;
@@ -77,12 +61,11 @@ class Board {
         }
         
         this.moveTime += deltatime;
-        this.moveRotationTime += deltatime;
         
         if (this.moveLeft && this.moveTime >= this.moveTimeLimit) {
             this.moveTime = 0;
-            var prevX = this.piece.getX();
-            this.piece.left();
+            var prevX = this.piece.x;
+            this.piece.x--;
             if (this.collide(this.piece)) {
                 this.piece.x = prevX;
             }
@@ -90,29 +73,23 @@ class Board {
         
         if (this.moveRight && this.moveTime >= this.moveTimeLimit) {
             this.moveTime = 0;
-            var prevX = this.piece.getX();
-            this.piece.right();
+            var prevX = this.piece.x;
+            this.piece.x++;
             if (this.collide(this.piece)) {
                 this.piece.x = prevX;
             }
         }
         
-        if (this.rotated && this.moveRotationTime >= this.moveRotationTimeLimit) {
-            this.moveRotationTime = 0;
-            var prevRotationIndex = this.piece.rotationIndex;
+        if (this.rotated && !this.rotationDone) {
+            this.rotationDone = true;
             this.piece.rotate();
             if (this.collide(this.piece)) {
-                this.piece.rotationIndex = prevRotationIndex;
+                this.piece.restorePreviousMatrix();
             }
         }       
     }
     
-    hasPiece() {
-        return this.piece !== null;
-    }
-    
-    render(context) {
-        
+    render(context) {       
         for (var a = 0; a < this.width * this.height; a++) {
             var x = a % this.width;
             var y = Math.floor(a / this.width);
@@ -143,16 +120,31 @@ class Board {
         this.moveRight = bool;
     }
     
+    down(bool) {
+        if (bool) {
+            if (this.downSpeedTimeLimitTmp <= 0) {
+                this.downSpeedTimeLimitTmp = this.downSpeedTimeLimit;
+                this.downSpeedTimeLimit *= 0.2;
+            }
+        } else {
+            this.downSpeedTimeLimit = this.downSpeedTimeLimitTmp;
+            this.downSpeedTimeLimitTmp = 0;
+        }
+    }
+    
     rotate(bool) {
         this.rotated = bool;
+        if (!bool) {
+            this.rotationDone = false;
+        }
     }
     
     collide(piece) {
         for (var y = 0; y < piece.size; y++) {
             for (var x = 0; x < piece.size; x++) {
-                if (piece.getRotationMatrixValue(x, y) === 1) {
-                    var currX = piece.getX() + x;
-                    var currY = piece.getY() + y;
+                if (piece.getValue(x, y) === 1) {
+                    var currX = piece.x + x;
+                    var currY = piece.y + y;
                     if (currX < 0 || currX >= this.width || currY >= this.height || this.matrix[currY * this.width + currX] === 1) {
                         return true;
                     }
@@ -186,10 +178,5 @@ class Board {
                 }
             }
         }
-    }
-    
-    getRandomPiece() {
-        var index = Math.round((this.piecesClasses.length - 1) * Math.random());
-        return new this.piecesClasses[index](this.tileSize);
     }
 }

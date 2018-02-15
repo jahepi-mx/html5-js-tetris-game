@@ -14,13 +14,6 @@ and open the template in the editor.
         <script src="scene.js"></script>
         <script src="entities/board.js"></script>
         <script src="entities/piece.js"></script>
-        <script src="entities/piece1.js"></script>
-        <script src="entities/piece2.js"></script>
-        <script src="entities/piece3.js"></script>
-        <script src="entities/piece4.js"></script>
-        <script src="entities/piece5.js"></script>
-        <script src="entities/piece6.js"></script>
-        <script src="entities/piece7.js"></script>
         <script type="text/javascript">
             
             var canvas = null;
@@ -31,7 +24,7 @@ and open the template in the editor.
             window.onload = function() {
                 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
                 canvas = document.getElementById("canvas");
-                canvas.width = 600;
+                canvas.width = 800;
                 canvas.height = 800;
                 context = canvas.getContext("2d");
                 scene = new Scene(canvas, context);
@@ -50,6 +43,8 @@ and open the template in the editor.
         </script>
     </head>
     <body>
-        <canvas id="canvas"></canvas>
+        <div style="margin: 0 auto; text-align: center">
+            <canvas id="canvas" style="background-color: black;"></canvas>
+        </div>
     </body>
 </html>

@@ -1,25 +1,19 @@
 class Piece {
     
-    constructor(x, y, size, tileSize) {
+    constructor(x, y, size, tileSize, matrix) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize; // tile pixel width height
         this.size = size; // tetromino width height size
-        this.rotationIndex = 0;
-        this.rotations = [];
+        this.matrix = matrix;
+        this.prevMatrix = matrix;
         
-    }
-    
-    setRotationsMatrix(rotations) {
-        for (let rotation of rotations) {
-            this.rotations.push(rotation);
-        }
     }
     
     render(context) {
         for (var y = 0; y < this.size; y++) {
             for (var x = 0; x < this.size; x++) {
-                if (this.rotations[this.rotationIndex][y * this.size + x] === 1) {
+                if (this.matrix[y * this.size + x] === 1) {
                     var currX = this.x + x;
                     var currY = this.y + y;
                     context.fillStyle = "#0000FF";
@@ -34,35 +28,41 @@ class Piece {
     }
     
     rotate() {
-        this.rotationIndex++;
-        this.rotationIndex %= this.rotations.length;
+        /* 
+         Rotation sample of 3x3 matrix rotation to help build the algorithm
+            0,0 - 0,2
+            1,0 - 0,1
+            2,0 - 0,0
+
+            0,1 - 1,2
+            1,1 - 1,1
+            2,1 - 1,0
+        
+            0,2 - 2,2
+            1,2 - 2,1
+            2,2 - 2,0   
+         */
+        var newMatrix = [];
+        for (var a = 0; a < this.size * this.size; a++) {
+            var x = a % this.size;
+            var y = Math.floor(a / this.size);
+            var newX = y;
+            var newY = this.size - x - 1;
+            newMatrix[newY * this.size + newX] = this.matrix[a];
+        }
+        this.prevMatrix = this.matrix;
+        this.matrix = newMatrix;
     }
     
-    left() {
-        this.x--;
+    restorePreviousMatrix() {
+        this.matrix = this.prevMatrix;
     }
     
-    right() {
-        this.x++;
+    getValue(x, y) {
+        return this.matrix[y * this.size + x];
     }
     
-    down() {
-        this.y++;
-    }
-    
-    getX() {
-        return this.x;
-    }
-    
-    getY() {
-        return this.y;
-    }
-    
-    getRotationMatrix() {
-        return this.rotations[this.rotationIndex];
-    }
-    
-    getRotationMatrixValue(x, y) {
-        return this.rotations[this.rotationIndex][y * this.size + x];
+    clone() {
+        return new Piece(this.x, this.y, this.size, this.tileSize, this.matrix);
     }
 }
