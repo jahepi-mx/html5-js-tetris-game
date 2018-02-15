@@ -28,7 +28,7 @@ class Board {
         this.width = 10;
         this.height = 20;
         this.piece = null;
-        this.downSpeedTimeLimit = 0.2;
+        this.downSpeedTimeLimit = 0.4;
         this.downSpeedTime = 0;
         this.moveTime = 0;
         this.moveTimeLimit = 0.1;
@@ -39,6 +39,7 @@ class Board {
         this.moveRight = false;
         this.rotated = false;
         this.piecesClasses = [Piece1, Piece2, Piece3, Piece4, Piece5, Piece6, Piece7];
+        this.isFilled = false;
     }
     
     add(piece) {
@@ -47,7 +48,7 @@ class Board {
     
     update(deltatime) {
         
-        if (this.piece === null) {
+        if (this.piece === null || this.isFilled) {
             return;
         }
         
@@ -66,7 +67,11 @@ class Board {
                     }
                 }
                 this.clearLines();
-                this.piece = null;
+                this.piece = this.getRandomPiece();
+                // If it is collinding with something the game must end.
+                if (this.collide(this.piece)) {
+                    this.isFilled = true;
+                }
                 return;
             }
         }
@@ -185,6 +190,6 @@ class Board {
     
     getRandomPiece() {
         var index = Math.round((this.piecesClasses.length - 1) * Math.random());
-        return new this.piecesClasses[index](0, 0, this.tileSize);
+        return new this.piecesClasses[index](this.tileSize);
     }
 }

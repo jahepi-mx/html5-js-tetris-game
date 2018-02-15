@@ -1,8 +1,8 @@
 class Piece5 extends Piece {
     
-    constructor(x, y, tileSize) {
+    constructor(tileSize) {
         
-        super(x, y, 3, tileSize);
+        super(3, 0, 3, tileSize);
         
         var rotated0 = [
             1, 1, 0,

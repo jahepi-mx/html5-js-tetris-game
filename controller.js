@@ -8,9 +8,6 @@ class Controller {
     update(deltatime) {
         //console.log("fps: " + (1 / deltatime));
         this.board.update(deltatime);
-        if (this.board.hasPiece() === false) {
-            this.board.add(this.board.getRandomPiece());
-        }
     }
     
     left(bool) {
