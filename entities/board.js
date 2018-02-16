@@ -20,10 +20,15 @@ class Board {
     }
     
     init() {
+        this.queue = [];
+        for (var a = 0; a < 5; a++) {
+           this.queue.push(this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone());
+        }
         for (var a = 0; a < this.width * this.height; a++) {
             this.matrix[a] = 0;
         }
-        this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
+        this.animationTiles = [];
+        this.piece = this.queue.shift();
         this.downSpeedTimeLimit = 0.4;
         this.downSpeedTimeLimitTmp = 0;
         this.downSpeedTime = 0;
@@ -42,6 +47,13 @@ class Board {
             return;
         }
         
+        for (var a = 0; a < this.animationTiles.length; a++) {
+            this.animationTiles[a].update(deltatime);
+            if (this.animationTiles[a].isDead) {
+                this.animationTiles.splice(a--, 1);
+            }
+        }
+        
         this.downSpeedTime += deltatime;
         if (this.downSpeedTime >= this.downSpeedTimeLimit) {
             this.downSpeedTime = 0;
@@ -57,7 +69,8 @@ class Board {
                     }
                 }
                 this.clearLines();
-                this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
+                this.queue.push(this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone());
+                this.piece = this.queue.shift();
                 // If it is collinding with something the game must end.
                 if (this.collide(this.piece)) {
                     this.isOver = true;
@@ -106,6 +119,10 @@ class Board {
         
         if (this.piece !== null) {
             this.piece.render(context);
+        }
+        
+        for (let tile of this.animationTiles) {
+            tile.render(context);
         }
     }
     
@@ -169,6 +186,7 @@ class Board {
             if (clear) {
                 for (var x = 0; x < this.width; x++) {
                     this.matrix[y * this.width + x] = 0;
+                    this.animationTiles.push(new TileAnimation(x, y, this.tileSize));
                 }
                 
                 for (var innerY = y - 1; innerY >= 0; innerY--) {

@@ -11,6 +11,7 @@ class Scene {
         this.startButton = new Button(200, 400, 8, "start");
         this.music = null;
         this.assets = Assets.getInstance();
+        this.atlas = Atlas.getInstance();
     }
     
     update(deltatime) {
@@ -27,6 +28,23 @@ class Scene {
         context.imageSmoothingEnabled = false;
         this.board.render(context);
         this.startButton.render(context);
+        // render board pieces queue
+        var xOffset = this.board.width * this.board.tileSize;
+        var size = 150;
+        for (var a = 0; a < this.board.queue.length; a++) {
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites["s0"].x, this.atlas.sprites["s0"].y, this.atlas.sprites["s0"].width, this.atlas.sprites["s0"].height, xOffset, a * size, size, size);
+            var piece = this.board.queue[a];
+            var pieceTileSize = 20;
+            var width = piece.size * pieceTileSize;
+            var centerX = xOffset + (size / 2) - (width / 2);
+            var centerY = a * size + (size / 2) - (width / 2);
+            for (var b = 0; b < piece.size * piece.size; b++) {
+                if (piece.matrix[b] === 1) {
+                    var name = "s" + piece.type;
+                    context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, centerX + (b % piece.size) * pieceTileSize, centerY + Math.floor(b / piece.size) * pieceTileSize, pieceTileSize, pieceTileSize);
+                }
+            }  
+        }
     }
     
     onMouseDown(evt) {

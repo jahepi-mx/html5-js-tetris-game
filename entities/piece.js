@@ -31,7 +31,7 @@ class Piece {
     
     rotate() {
         /* 
-         Rotation sample of 3x3 matrix rotation to help build the algorithm
+         Rotation sample of 3x3 matrix to help build the algorithm
             0,0 - 0,2
             1,0 - 0,1
             2,0 - 0,0
