@@ -57,7 +57,7 @@ class Board {
         this.speedTimeIncrementTime += deltatime;
         
         if (this.tmpLines > 0 && this.tmpLines % 5 === 0) {
-            this.downSpeedTimeLimit *= 1.5;
+            this.downSpeedTimeLimit *= 2;
             this.tmpLines = 0;
             if (this.downSpeedTimeLimit > this.downSpeedTimeLimitCopy) {
                 this.downSpeedTimeLimit = this.downSpeedTimeLimitCopy;
