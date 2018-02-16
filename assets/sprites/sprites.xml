@@ -1,10 +1,12 @@
 <TextureAtlas imagePath="sprites.png">
-	<SubTexture name="s1.jpg" x="18" y="0" width="16" height="16"/>
-	<SubTexture name="s2.jpg" x="36" y="0" width="16" height="16"/>
-	<SubTexture name="s3.jpg" x="18" y="36" width="16" height="16"/>
-	<SubTexture name="s4.jpg" x="18" y="18" width="16" height="16"/>
-	<SubTexture name="s5.jpg" x="36" y="18" width="16" height="16"/>
-	<SubTexture name="s6.jpg" x="0" y="36" width="16" height="16"/>
-	<SubTexture name="s7.jpg" x="0" y="18" width="16" height="16"/>
-	<SubTexture name="s0.jpg" x="0" y="0" width="16" height="16"/>
+	<SubTexture name="done.png" x="0" y="18" width="32" height="16"/>
+	<SubTexture name="s1.jpg" x="18" y="54" width="16" height="16"/>
+	<SubTexture name="s2.jpg" x="18" y="36" width="16" height="16"/>
+	<SubTexture name="s3.jpg" x="0" y="108" width="16" height="16"/>
+	<SubTexture name="s4.jpg" x="0" y="90" width="16" height="16"/>
+	<SubTexture name="s5.jpg" x="18" y="72" width="16" height="16"/>
+	<SubTexture name="s6.jpg" x="0" y="54" width="16" height="16"/>
+	<SubTexture name="s7.jpg" x="0" y="72" width="16" height="16"/>
+	<SubTexture name="s0.jpg" x="0" y="36" width="16" height="16"/>
+	<SubTexture name="start.png" x="0" y="0" width="32" height="16"/>
 </TextureAtlas>

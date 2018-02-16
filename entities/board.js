@@ -4,9 +4,6 @@ class Board {
         this.width = 10;
         this.height = 20;
         this.matrix = [];
-        for (var a = 0; a < this.width * this.height; a++) {
-            this.matrix[a] = 0;
-        }
         this.tileSize = 40;
         this.pieces = [
             new Piece(3, 0, 3, this.tileSize, 1, [1, 0, 0, 1, 1, 1, 0, 0, 0]),
@@ -17,6 +14,15 @@ class Board {
             new Piece(3, 0, 3, this.tileSize, 6, [0, 1, 0, 1, 1, 1, 0, 0, 0]),
             new Piece(3, 0, 4, this.tileSize, 7, [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         ];    
+        this.atlas = Atlas.getInstance();
+        this.assets = Assets.getInstance();
+        this.init();
+    }
+    
+    init() {
+        for (var a = 0; a < this.width * this.height; a++) {
+            this.matrix[a] = 0;
+        }
         this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
         this.downSpeedTimeLimit = 0.4;
         this.downSpeedTimeLimitTmp = 0;
@@ -27,14 +33,12 @@ class Board {
         this.moveRight = false;
         this.rotated = false;
         this.rotationDone = false;
-        this.isFilled = false;
-        this.atlas = Atlas.getInstance();
-        this.assets = Assets.getInstance(); 
+        this.isOver = false;
     }
     
     update(deltatime) {
         
-        if (this.isFilled) {
+        if (this.isOver) {
             return;
         }
         
@@ -56,7 +60,8 @@ class Board {
                 this.piece = this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone();
                 // If it is collinding with something the game must end.
                 if (this.collide(this.piece)) {
-                    this.isFilled = true;
+                    this.isOver = true;
+                    this.piece = null;
                 }
                 return;
             }
@@ -176,5 +181,9 @@ class Board {
                 }
             }
         }
+    }
+    
+    reset() {
+        this.init();
     }
 }

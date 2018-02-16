@@ -9,11 +9,10 @@ and open the template in the editor.
         <title>JSTetris</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="render.js"></script>
-        <script src="controller.js"></script>
         <script src="scene.js"></script>
         <script src="entities/board.js"></script>
         <script src="entities/piece.js"></script>
+        <script src="entities/button.js"></script>
         <script src="utils/assets.js"></script>
         <script src="utils/atlas.js"></script>
         <script type="text/javascript">
@@ -39,7 +38,7 @@ and open the template in the editor.
                 canvas.width = 800;
                 canvas.height = 800;
                 context = canvas.getContext("2d");
-                scene = new Scene(canvas, context);
+                scene = new Scene(canvas);
                 window.requestAnimationFrame = requestAnimationFrame;
                 window.requestAnimationFrame(update);
             }
@@ -49,6 +48,7 @@ and open the template in the editor.
                 var deltatime = diff / 1000;
                 prevTime = currTime;
                 scene.update(deltatime);
+                scene.render(context);
                 window.requestAnimationFrame(update);
             }
         </script>
