@@ -227,7 +227,7 @@ class Board {
     }
     
     getCurrentSpeed() {
-        return this.downSpeedTimeLimitCopy / this.downSpeedTimeLimit;
+        return Math.round(this.downSpeedTimeLimitCopy / this.downSpeedTimeLimit);
     }
     
     reset() {

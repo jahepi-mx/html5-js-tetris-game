@@ -47,6 +47,33 @@ class Scene {
                 }
             }  
         }
+        
+        context.font = "130px joystix";
+        context.fillStyle = "rgba(255, 0, 0, 255)";
+        context.textAlign = "left";
+        context.fillText("JSTetris", xOffset + 30, this.board.height * this.board.tileSize - 50);
+        
+        context.font = "90px joystix";
+        context.fillStyle = "rgba(30, 144, 255, 255)";
+        context.fillText("time", xOffset + size + 10, 55);
+        
+        context.fillStyle = "rgba(176, 224, 230, 255)";
+        var minutes = Math.floor(this.board.time / 60);
+        var seconds = Math.floor(this.board.time % 60);
+        var hours = Math.floor(minutes / 60);
+        var minutesLeft = minutes % 60;
+        context.font = "80px joystix";
+        context.fillText((hours < 10 ? "0" + hours : hours) + ":" + (minutesLeft < 10 ? "0" + minutesLeft : minutesLeft) + ":" + (seconds < 10 ? "0" + seconds : seconds), xOffset + size + 10, 105);
+        context.font = "90px joystix";
+        context.fillStyle = "rgba(255, 255, 0, 255)";
+        context.fillText("lines", xOffset + size + 10, 105 * 2);
+        context.fillStyle = "rgba(255, 250, 205, 255)";
+        context.fillText(this.board.lines, xOffset + size + 10, 105 * 2.5);
+        
+        context.fillStyle = "rgba(255, 20, 147, 255)";
+        context.fillText("speed", xOffset + size + 10, 105 * 3.5);
+        context.fillStyle = "rgba(255, 105, 180, 255)";
+        context.fillText(this.board.getCurrentSpeed() + "x", xOffset + size + 10, 105 * 4);
     }
     
     onMouseDown(evt) {
