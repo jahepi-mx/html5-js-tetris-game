@@ -9,6 +9,9 @@ and open the template in the editor.
         <title>JSTetris</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+            @font-face { font-family: 'joystix'; src: url('assets/fonts/PixelMYZ.ttf'); }
+        </style>
         <script src="scene.js"></script>
         <script src="entities/board.js"></script>
         <script src="entities/piece.js"></script>
@@ -58,6 +61,7 @@ and open the template in the editor.
     <body>
         <div style="margin: 0 auto; text-align: center">
             <canvas id="canvas" style="background-color: black;"></canvas>
+            <span style="font-family: joystix; display: none">Hidden text just for loading font before canvas.</span>
         </div>
     </body>
 </html>

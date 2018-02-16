@@ -19,7 +19,9 @@ class Scene {
         if (this.board.isOver) {
             this.startButton.visible = true;
             this.startGame = false;
-            this.music.stop();
+            if (this.music !== null) {
+                this.music.stop();
+            }
         }
     }
     

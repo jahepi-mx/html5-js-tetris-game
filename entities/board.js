@@ -28,8 +28,12 @@ class Board {
             this.matrix[a] = 0;
         }
         this.animationTiles = [];
+        this.time = 0;
+        this.lines = 0;
+        this.tmpLines = 0;
         this.piece = this.queue.shift();
         this.downSpeedTimeLimit = 0.4;
+        this.downSpeedTimeLimitCopy = this.downSpeedTimeLimit;
         this.downSpeedTimeLimitTmp = 0;
         this.downSpeedTime = 0;
         this.moveTime = 0;
@@ -39,12 +43,31 @@ class Board {
         this.rotated = false;
         this.rotationDone = false;
         this.isOver = false;
+        this.speedTimeIncrementTime = 0;
+        this.speedTimeIncrementTimeLimit = 60;
     }
     
     update(deltatime) {
         
         if (this.isOver) {
             return;
+        }
+        
+        this.time += deltatime;
+        this.speedTimeIncrementTime += deltatime;
+        
+        if (this.tmpLines > 0 && this.tmpLines % 5 === 0) {
+            this.downSpeedTimeLimit *= 1.5;
+            this.tmpLines = 0;
+            if (this.downSpeedTimeLimit > this.downSpeedTimeLimitCopy) {
+                this.downSpeedTimeLimit = this.downSpeedTimeLimitCopy;
+                this.speedTimeIncrementTime = 0;
+            }
+        }
+        
+        if (this.speedTimeIncrementTime >= this.speedTimeIncrementTimeLimit) {
+            this.downSpeedTimeLimit *= 0.5;
+            this.speedTimeIncrementTime = 0;
         }
         
         for (var a = 0; a < this.animationTiles.length; a++) {
@@ -184,6 +207,8 @@ class Board {
                 }
             }
             if (clear) {
+                this.lines++;
+                this.tmpLines = this.lines;
                 for (var x = 0; x < this.width; x++) {
                     this.matrix[y * this.width + x] = 0;
                     this.animationTiles.push(new TileAnimation(x, y, this.tileSize));
@@ -199,6 +224,10 @@ class Board {
                 }
             }
         }
+    }
+    
+    getCurrentSpeed() {
+        return this.downSpeedTimeLimitCopy / this.downSpeedTimeLimit;
     }
     
     reset() {
