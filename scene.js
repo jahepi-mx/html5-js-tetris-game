@@ -9,6 +9,8 @@ class Scene {
         this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
         this.canvas.addEventListener("mouseup", this.onMouseUp.bind(this));
         this.startButton = new Button(200, 400, 8, "start");
+        this.music = null;
+        this.assets = Assets.getInstance();
     }
     
     update(deltatime) {
@@ -16,6 +18,7 @@ class Scene {
         if (this.board.isOver) {
             this.startButton.visible = true;
             this.startGame = false;
+            this.music.stop();
         }
     }
     
@@ -34,6 +37,7 @@ class Scene {
             this.startButton.visible = false;
             this.startGame = true;
             this.board.reset();
+            this.music = this.assets.playAudio(this.assets.tetris, true, 0.5);
         }
     }
     
