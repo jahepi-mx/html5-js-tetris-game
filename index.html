@@ -28,6 +28,14 @@ and open the template in the editor.
             var scene = null;
             
             window.onload = function() {
+                canvas = document.getElementById("canvas");
+                canvas.width = 800;
+                canvas.height = 800;
+                context = canvas.getContext("2d");
+                context.font = "40px joystix";
+                context.fillStyle = 'white';
+                context.textAlign = "center";
+                context.fillText("loading...", canvas.width / 2, canvas.height / 2);
                 var assets = Assets.getInstance();
                 assets.loadAll(onLoadAssets);
             };
@@ -39,10 +47,6 @@ and open the template in the editor.
             
             function onLoadAtlas() {
                 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-                canvas = document.getElementById("canvas");
-                canvas.width = 800;
-                canvas.height = 800;
-                context = canvas.getContext("2d");
                 scene = new Scene(canvas);
                 window.requestAnimationFrame = requestAnimationFrame;
                 window.requestAnimationFrame(update);

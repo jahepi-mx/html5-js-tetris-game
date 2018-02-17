@@ -22,7 +22,7 @@ class Board {
     init() {
         this.queue = [];
         for (var a = 0; a < 5; a++) {
-           this.queue.push(this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone());
+           this.queue.push(this.pieces[this.getNextPiece()].clone());
         }
         for (var a = 0; a < this.width * this.height; a++) {
             this.matrix[a] = 0;
@@ -56,13 +56,13 @@ class Board {
         this.time += deltatime;
         this.speedTimeIncrementTime += deltatime;
         
-        if (this.tmpLines > 0 && this.tmpLines % 5 === 0) {
+        if (this.tmpLines > 0 && this.tmpLines % 10 === 0) {
             this.downSpeedTimeLimit *= 2;
             this.tmpLines = 0;
             if (this.downSpeedTimeLimit > this.downSpeedTimeLimitCopy) {
                 this.downSpeedTimeLimit = this.downSpeedTimeLimitCopy;
-                this.speedTimeIncrementTime = 0;
             }
+            this.speedTimeIncrementTime = 0;
         }
         
         if (this.speedTimeIncrementTime >= this.speedTimeIncrementTimeLimit) {
@@ -92,7 +92,7 @@ class Board {
                     }
                 }
                 this.clearLines();
-                this.queue.push(this.pieces[Math.round((this.pieces.length - 1) * Math.random())].clone());
+                this.queue.push(this.pieces[this.getNextPiece()].clone());
                 this.piece = this.queue.shift();
                 // If it is collinding with something the game must end.
                 if (this.collide(this.piece)) {
@@ -222,6 +222,21 @@ class Board {
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    getNextPiece() {
+        while (true) {
+            var index = Math.round((this.pieces.length - 1) * Math.random());
+            var found = false;
+            for (let piece of this.queue) {
+                if (this.pieces[index].type === piece.type) {
+                    found = true;
+                }
+            }
+            if (found === false) {
+                return index;
             }
         }
     }
