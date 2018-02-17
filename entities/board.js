@@ -57,16 +57,27 @@ class Board {
         this.speedTimeIncrementTime += deltatime;
         
         if (this.tmpLines > 0 && this.tmpLines % 10 === 0) {
-            this.downSpeedTimeLimit *= 2;
-            this.tmpLines = 0;
-            if (this.downSpeedTimeLimit > this.downSpeedTimeLimitCopy) {
-                this.downSpeedTimeLimit = this.downSpeedTimeLimitCopy;
+            if (this.downSpeedTimeLimitTmp > 0) {
+                this.downSpeedTimeLimitTmp *= 2;
+                if (this.downSpeedTimeLimitTmp > this.downSpeedTimeLimitCopy) {
+                    this.downSpeedTimeLimitTmp = this.downSpeedTimeLimitCopy;
+                }
+            } else {
+                this.downSpeedTimeLimit *= 2;
+                if (this.downSpeedTimeLimit > this.downSpeedTimeLimitCopy) {
+                    this.downSpeedTimeLimit = this.downSpeedTimeLimitCopy;
+                }
             }
+            this.tmpLines = 0;
             this.speedTimeIncrementTime = 0;
         }
         
         if (this.speedTimeIncrementTime >= this.speedTimeIncrementTimeLimit) {
-            this.downSpeedTimeLimit *= 0.5;
+            if (this.downSpeedTimeLimitTmp > 0) {
+                this.downSpeedTimeLimitTmp *= 0.5;
+            } else {
+                this.downSpeedTimeLimit *= 0.5;
+            }
             this.speedTimeIncrementTime = 0;
         }
         
