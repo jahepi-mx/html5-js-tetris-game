@@ -18,8 +18,9 @@ class Button {
     }
     
     collide(x, y) {
-        return x >= this.x - this.width / 2 && x <= this.x + this.width / 2 &&
-                y >= this.y - this.height / 2 && y <= this.y + this.height / 2 && this.visible;
+        /*return x >= this.x - this.width / 2 && x <= this.x + this.width / 2 &&
+                y >= this.y - this.height / 2 && y <= this.y + this.height / 2 && this.visible;*/
+        return this.visible;
     }
     
 }
