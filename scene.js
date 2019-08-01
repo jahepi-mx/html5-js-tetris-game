@@ -2,13 +2,13 @@ class Scene {
     
     constructor(canvas) {
         this.canvas = canvas;
-        this.board = new Board();
+        this.board = new Board(canvas.width * 0.05, canvas.height * 0.05);
         this.startGame = false;
         document.onkeydown = this.onKeyDown.bind(this);
         document.onkeyup = this.onKeyUp.bind(this);
         this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
         this.canvas.addEventListener("mouseup", this.onMouseUp.bind(this));
-        this.startButton = new Button(200, 400, 8, "start");
+        this.startButton = new Button(canvas.width * 0.25, canvas.height * 0.5, 8, "start");
         this.music = null;
         this.assets = Assets.getInstance();
         this.atlas = Atlas.getInstance();
@@ -31,49 +31,52 @@ class Scene {
         this.board.render(context);
         this.startButton.render(context);
         // render board pieces queue
-        var xOffset = this.board.width * this.board.tileSize;
-        var size = 150;
+        var xOffset = this.board.width * this.board.tileWidth;
+        var sizeX = this.canvas.width * 0.1875;
+        var sizeY = this.canvas.height * 0.1875;
         for (var a = 0; a < this.board.queue.length; a++) {
-            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites["s0"].x, this.atlas.sprites["s0"].y, this.atlas.sprites["s0"].width, this.atlas.sprites["s0"].height, xOffset, a * size, size, size);
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites["s0"].x, this.atlas.sprites["s0"].y, this.atlas.sprites["s0"].width, this.atlas.sprites["s0"].height, xOffset, a * sizeY, sizeX, sizeY);
             var piece = this.board.queue[a];
-            var pieceTileSize = 20;
-            var width = piece.size * pieceTileSize;
-            var centerX = xOffset + (size / 2) - (width / 2);
-            var centerY = a * size + (size / 2) - (width / 2);
+            var pieceTileWidthSize = this.canvas.width * 0.025;
+            var pieceTileHeightSize = this.canvas.height * 0.025;
+            var width = piece.size * pieceTileWidthSize;
+            var height = piece.size * pieceTileHeightSize;
+            var centerX = xOffset + (sizeX / 2) - (width / 2);
+            var centerY = a * sizeY + (sizeY / 2) - (height / 2);
             for (var b = 0; b < piece.size * piece.size; b++) {
                 if (piece.matrix[b] === 1) {
                     var name = "s" + piece.type;
-                    context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, centerX + (b % piece.size) * pieceTileSize, centerY + Math.floor(b / piece.size) * pieceTileSize, pieceTileSize, pieceTileSize);
+                    context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, centerX + (b % piece.size) * pieceTileWidthSize, centerY + Math.floor(b / piece.size) * pieceTileHeightSize, pieceTileWidthSize, pieceTileHeightSize);
                 }
             }  
         }
         
-        context.font = "130px joystix";
+        context.font = parseInt(this.canvas.height * 0.25) + "px joystix";
         context.fillStyle = "rgba(255, 0, 0, 255)";
         context.textAlign = "left";
-        context.fillText("JSTetris", xOffset + 30, this.board.height * this.board.tileSize - 50);
+        context.fillText("JSTetris", xOffset + this.canvas.width * 0.0395, this.board.height * this.board.tileHeight - this.canvas.height * 0.0625);
         
-        context.font = "90px joystix";
+        context.font = parseInt(this.canvas.width * 0.09) + "px joystix";
         context.fillStyle = "rgba(30, 144, 255, 255)";
-        context.fillText("time", xOffset + size + 10, 55);
+        context.fillText("time", xOffset + sizeX + this.canvas.width * 0.0125, this.canvas.height * 0.06875);
         
         context.fillStyle = "rgba(176, 224, 230, 255)";
         var minutes = Math.floor(this.board.time / 60);
         var seconds = Math.floor(this.board.time % 60);
         var hours = Math.floor(minutes / 60);
         var minutesLeft = minutes % 60;
-        context.font = "80px joystix";
-        context.fillText((hours < 10 ? "0" + hours : hours) + ":" + (minutesLeft < 10 ? "0" + minutesLeft : minutesLeft) + ":" + (seconds < 10 ? "0" + seconds : seconds), xOffset + size + 10, 105);
-        context.font = "90px joystix";
+        context.font = parseInt(this.canvas.height * 0.15) + "px joystix";
+        context.fillText((hours < 10 ? "0" + hours : hours) + ":" + (minutesLeft < 10 ? "0" + minutesLeft : minutesLeft) + ":" + (seconds < 10 ? "0" + seconds : seconds), xOffset + sizeX + this.canvas.width * 0.0125, this.canvas.height * 0.13125);
+        context.font = parseInt(this.canvas.height * 0.15) + "px joystix";
         context.fillStyle = "rgba(255, 255, 0, 255)";
-        context.fillText("lines", xOffset + size + 10, 105 * 2);
+        context.fillText("lines", xOffset + sizeX + this.canvas.width * 0.0125, this.canvas.height * 0.13125 * 2);
         context.fillStyle = "rgba(255, 250, 205, 255)";
-        context.fillText(this.board.lines, xOffset + size + 10, 105 * 2.5);
+        context.fillText(this.board.lines, xOffset + sizeX + this.canvas.width * 0.0125, this.canvas.height * 0.13125 * 2.5);
         
         context.fillStyle = "rgba(255, 20, 147, 255)";
-        context.fillText("speed", xOffset + size + 10, 105 * 3.5);
+        context.fillText("speed", xOffset + sizeX + this.canvas.width * 0.0125, this.canvas.height * 0.13125 * 3.5);
         context.fillStyle = "rgba(255, 105, 180, 255)";
-        context.fillText(this.board.getCurrentSpeed() + "x", xOffset + size + 10, 105 * 4);
+        context.fillText(this.board.getCurrentSpeed() + "x", xOffset + sizeX + this.canvas.width * 0.0125, this.canvas.height * 0.13125 * 4);
     }
     
     onMouseDown(evt) {

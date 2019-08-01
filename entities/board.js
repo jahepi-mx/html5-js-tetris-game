@@ -1,18 +1,19 @@
 class Board {
     
-    constructor() {   
+    constructor(tileWidth, tileHeight) {   
         this.width = 10;
         this.height = 20;
         this.matrix = [];
-        this.tileSize = 40;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
         this.pieces = [
-            new Piece(3, 0, 3, this.tileSize, 1, [1, 0, 0, 1, 1, 1, 0, 0, 0]),
-            new Piece(4, 0, 2, this.tileSize, 2, [1, 1, 1, 1]),
-            new Piece(3, 0, 3, this.tileSize, 3, [0, 0, 1, 1, 1, 1, 0, 0, 0]),
-            new Piece(3, 0, 3, this.tileSize, 4, [0, 1, 1, 1, 1, 0, 0, 0, 0]),
-            new Piece(3, 0, 3, this.tileSize, 5, [1, 1, 0, 0, 1, 1, 0, 0, 0]),
-            new Piece(3, 0, 3, this.tileSize, 6, [0, 1, 0, 1, 1, 1, 0, 0, 0]),
-            new Piece(3, 0, 4, this.tileSize, 7, [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            new Piece(3, 0, 3, this.tileWidth, this.tileHeight, 1, [1, 0, 0, 1, 1, 1, 0, 0, 0]),
+            new Piece(4, 0, 2, this.tileWidth, this.tileHeight, 2, [1, 1, 1, 1]),
+            new Piece(3, 0, 3, this.tileWidth, this.tileHeight, 3, [0, 0, 1, 1, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileWidth, this.tileHeight, 4, [0, 1, 1, 1, 1, 0, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileWidth, this.tileHeight, 5, [1, 1, 0, 0, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 3, this.tileWidth, this.tileHeight, 6, [0, 1, 0, 1, 1, 1, 0, 0, 0]),
+            new Piece(3, 0, 4, this.tileWidth, this.tileHeight, 7, [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         ];    
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
@@ -148,7 +149,7 @@ class Board {
             var x = a % this.width;
             var y = Math.floor(a / this.width);
             var name = "s" + this.matrix[a];
-            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);  
+            context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);  
         }
         
         if (this.piece !== null) {
@@ -222,7 +223,7 @@ class Board {
                 this.tmpLines = this.lines;
                 for (var x = 0; x < this.width; x++) {
                     this.matrix[y * this.width + x] = 0;
-                    this.animationTiles.push(new TileAnimation(x, y, this.tileSize));
+                    this.animationTiles.push(new TileAnimation(x, y, this.tileWidth, this.tileHeight));
                 }
                 
                 for (var innerY = y - 1; innerY >= 0; innerY--) {

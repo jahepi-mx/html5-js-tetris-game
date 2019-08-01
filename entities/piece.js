@@ -1,9 +1,10 @@
 class Piece {
     
-    constructor(x, y, size, tileSize, type, matrix) {
+    constructor(x, y, size, tileWidth, tileHeight, type, matrix) {
         this.x = x;
         this.y = y;
-        this.tileSize = tileSize; // tile pixel width height
+        this.tileWidth = tileWidth; // tile pixel width height
+        this.tileHeight = tileHeight;
         this.size = size; // tetromino width height size
         this.type = type;
         this.matrix = matrix;
@@ -19,7 +20,7 @@ class Piece {
                     var currX = this.x + x;
                     var currY = this.y + y;
                     var name = "s" + this.type;
-                    context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, currX * this.tileSize, currY * this.tileSize, this.tileSize, this.tileSize);
+                    context.drawImage(this.assets.spritesAtlas, this.atlas.sprites[name].x, this.atlas.sprites[name].y, this.atlas.sprites[name].width, this.atlas.sprites[name].height, currX * this.tileWidth, currY * this.tileHeight, this.tileWidth, this.tileHeight);
                 }
             }
         }
@@ -65,6 +66,6 @@ class Piece {
     }
     
     clone() {
-        return new Piece(this.x, this.y, this.size, this.tileSize, this.type, this.matrix);
+        return new Piece(this.x, this.y, this.size, this.tileWidth, this.tileHeight, this.type, this.matrix);
     }
 }
