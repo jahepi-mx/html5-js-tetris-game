@@ -1,13 +1,14 @@
 class Button {
     
-    constructor(x, y, scale, name) {
+    constructor(x, y, canvas, name) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.atlas = Atlas.getInstance();
         this.assets = Assets.getInstance();
-        this.width = this.atlas.sprites[this.name].width * scale;
-        this.height = this.atlas.sprites[this.name].height * scale;
+        var ratio = this.atlas.sprites[this.name].width / this.atlas.sprites[this.name].height;
+        this.width = canvas.width * 0.15 * ratio;
+        this.height = canvas.width * 0.15;
         this.visible = true;
     }
     

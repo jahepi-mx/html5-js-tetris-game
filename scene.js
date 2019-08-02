@@ -8,7 +8,7 @@ class Scene {
         document.onkeyup = this.onKeyUp.bind(this);
         this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
         this.canvas.addEventListener("mouseup", this.onMouseUp.bind(this));
-        this.startButton = new Button(canvas.width * 0.25, canvas.height * 0.5, 8, "start");
+        this.startButton = new Button(canvas.width * 0.25, canvas.height * 0.5, canvas, "start");
         this.music = null;
         this.assets = Assets.getInstance();
         this.atlas = Atlas.getInstance();
