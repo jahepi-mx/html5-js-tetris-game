@@ -7,6 +7,6 @@ JSTetris is a clone of the classic Tetris game in Html5 and Javascript
 - Left and Right arrow keys to move tetrominoes
 - Up and Down arrow keys to change tetromino rotation
 
-## Playable Demo
+## Playable Game
 
-http://jahepi-mx.github.io/jstetris
+https://jahepi-mx.github.io/jstetris
